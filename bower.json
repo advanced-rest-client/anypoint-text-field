@@ -17,8 +17,8 @@
   "private": true,
   "main": [
     "anypoint-text-field.html",
-    "anypoint-text-container.html"
-    "anypoint-text-textarea.html"
+    "anypoint-text-container.html",
+    "anypoint-text-textarea.html",
     "anypoint-validation-result.html"
   ],
   "repository": {
