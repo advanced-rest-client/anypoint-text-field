@@ -1,0 +1,192 @@
+<!--
+Copyright (C) Mulesoft Inc.
+All rights reserved.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-overlay-behavior/iron-overlay-behavior.html">
+<link rel="import" href="../iron-fit-behavior/iron-fit-behavior.html">
+<link rel="import" href="../anypoint-styles/colors.html">
+<link rel="import" href="../anypoint-styles/typography.html">
+<!--
+The `<anypoint-validation-result>` is a container for an error message or list of validation
+rules if the input element uses `validator`s.
+
+-->
+<dom-module id="anypoint-validation-result">
+  <template>
+    <style>
+    :host {
+      display: block;
+    }
+
+    .container {
+      padding: 7px;
+      border: 1px var(--anypoint-validation-result-border-color, --anypoint-color-aluminum3) solid;
+      position: relative;
+      background-color: #fff;
+    }
+
+    .arrow {
+      border-right: 4px solid var(--anypoint-color-steel4);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      left: -6px;
+      top: calc(50% - 4px);
+      display: block;
+      height: 0;
+      opacity: inherit;
+      position: absolute;
+      width: 0;
+      z-index: -1;
+    }
+
+    .border {
+      display: block;
+      opacity: inherit;
+      position: absolute;
+      background-color: var(--anypoint-color-steel4);
+      height: calc(100% + 2px);
+      width: 2px;
+      top: -1px;
+      left: -2px;
+    }
+
+    .is-invalid .arrow {
+      border-right-color: var(--anypoint-text-container-invalid-color, --anypoint-color-danger);
+    }
+
+    .is-invalid .border {
+      background-color: var(--anypoint-text-container-invalid-color, --anypoint-color-danger);
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    li {
+      @apply(--anypoint-font-body);
+      color: var(--anypoint-color-steel1);
+      font-size: 12px;
+    }
+
+    li[validated] {
+      color: var(--anypoint-color-aluminum4);
+      text-decoration: line-through;
+    }
+    </style>
+    <div class$="container [[_computeContainerClass(invalid)]]">
+      <div class="arrow"></div>
+      <div class="border"></div>
+      <ul>
+        <template is="dom-repeat" items="{{_messages}}">
+          <li validated$="[[item.valid]]">[[item.message]]</li>
+        </template>
+      </ul>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'anypoint-validation-result',
+
+      behaviors: [
+        Polymer.IronFitBehavior,
+        Polymer.IronOverlayBehavior
+      ],
+
+      properties: {
+        /**
+         * An error message to display. This should be used when native validators are used
+         */
+        errorMessage: String,
+        /**
+         * A property bind to `<anypoint-input>`'s `invalid` property.
+         * Should be used for both `errorMessage` and `validationStates`.
+         */
+        invalid: Boolean,
+        /**
+         * A property that should be bind to `<anypoint-input>`'s `validationStates` property.
+         * This property is set by the `Anypoint.AnypointValidatableBehavior`.
+         */
+        validationStates: Array,
+        /**
+         * A property that should be bind to `<anypoint-input>`'s `focused` property. Should be
+         * used when using `validationStates`
+         */
+        focused: Boolean,
+        noCancelOnOutsideClick: {
+          type: Boolean,
+          value: true
+        },
+        /**
+         * A list of messages to display at a time.
+         * @type {Array<String>}
+         */
+        _messages: Array
+      },
+
+      observers: [
+        '_renderMessage(errorMessage, invalid)',
+        '_renderList(invalid, focused, validationStates.*)'
+      ],
+      /**
+       * Renders an error message based on `errorMessage` property.
+       */
+      _renderMessage: function(errorMessage, invalid) {
+        if (!invalid || !errorMessage) {
+          this.opened = false;
+          return;
+        }
+        this._messages = [{
+          message: errorMessage,
+          valid: false
+        }];
+        this.opened = true;
+      },
+      /**
+       * Renders the list of validation messages based on the `validationStates` property
+       */
+      _renderList: function(invalid, focused, record) {
+        if ((!focused && !invalid) || !record || !record.base || !record.base.length) {
+          this.opened = false;
+          return;
+        }
+        this._messages = record.base;
+        this.opened = true;
+      },
+      /**
+       * Positions the element right outside the right border of the input.
+       * Simplified version of the `Polymer.IronFitBehavior`
+       */
+      position: function() {
+        this.style.position = 'absolute';
+        // Need border-box for margin/padding.
+        this.sizingTarget.style.boxSizing = 'border-box';
+        this.style.left = '0px';
+        this.style.top = '0px';
+
+        var rect = this.getBoundingClientRect();
+        var positionRect = this.__getNormalizedRect(this.positionTarget);
+
+        var width = positionRect.right - positionRect.left;
+        this.style.left = (width - 1) + 'px';
+
+        var targetCenter = positionRect.height / 2;
+        var top = targetCenter - (rect.height / 2);
+        this.style.top = (top - 7) + 'px';
+        // Additional offset because the input container is not symmetrical, half of container's
+        // top padding.
+        this.style.width = (rect.width) + 'px';
+      },
+
+      _computeContainerClass: function(invalid) {
+        var clazz = '';
+        if (invalid) {
+          clazz += 'is-invalid';
+        }
+        return clazz;
+      }
+    });
+  </script>
+</dom-module>

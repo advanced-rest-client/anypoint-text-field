@@ -1,0 +1,137 @@
+<!--
+Copyright (C) Mulesoft Inc.
+All rights reserved.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="import" href="../anypoint-input/anypoint-input.html">
+<link rel="import" href="anypoint-text-container.html">
+<link rel="import" href="anypoint-text-behavior.html">
+<link rel="import" href="anypoint-validation-result.html">
+
+<!--
+`<anypoint-text-field>` Text input styled for the Anypoint platform as a Polymer powered web component
+
+### Example
+```
+<anypoint-text-field></anypoint-text-field>
+```
+
+### Styling
+`<anypoint-text-field>` provides the following custom properties and mixins for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--anypoint-text-field` | Mixin applied to the element | `{}`
+
+@group UI Elements
+@element anypoint-text-field
+@demo demo/index.html
+-->
+<dom-module id="anypoint-text-textarea">
+  <template>
+    <style>
+    :host {
+      display: block;
+    }
+
+    :host {
+      display: block;
+    }
+
+    :host([hidden]) {
+      display: none !important;
+    }
+
+    label {
+      pointer-events: none;
+    }
+
+    anypoint-validation-result {
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+      -webkit-transition: all .2s ease-out;
+      transition: all .2s ease-out;
+    }
+
+    :host(:not([focused])) anypoint-validation-result {
+      transform: translate(2px);
+    }
+    </style>
+    <anypoint-text-container
+      no-label-float
+      auto-validate$="[[autoValidate]]"
+      disabled$="[[disabled]]"
+      invalid="[[invalid]]">
+
+      <textarea id="textarea"
+        disabled$="[[disabled]]"
+        title$="[[title]]"
+        bind-value="{{value}}"
+        invalid="{{invalid}}"
+        required$="[[required]]"
+        autocomplete$="[[autocomplete]]"
+        autofocus$="[[autofocus]]"
+        inputmode$="[[inputmode]]"
+        minlength$="[[minlength]]"
+        maxlength$="[[maxlength]]"
+        name$="[[name]]"
+        placeholder$="[[placeholder]]"
+        readonly$="[[readonly]]"
+        autocapitalize$="[[autocapitalize]]"
+        on-change="_onChange"
+        rows$="[[rows]]"></textarea>
+
+      <template is="dom-if" if="[[hasValidationMessage]]">
+        <anypoint-validation-result
+          aria-live="assertive"
+          error-message="[[errorMessage]]"
+          invalid="[[invalid]]"
+          focused="[[focused]]"
+          horizontal-align="right"></anypoint-validation-result>
+      </template>
+
+    </anypoint-text-container>
+  </template>
+  <script>
+  Polymer({
+    is: 'anypoint-text-textarea',
+    behaviors: [
+      Polymer.IronFormElementBehavior,
+      Anypoint.AnypointTextBehavior
+    ],
+
+    properties: {
+      _ariaLabelledBy: {
+        observer: '_ariaLabelledByChanged',
+        type: String
+      },
+      _ariaDescribedBy: {
+        observer: '_ariaDescribedByChanged',
+        type: String
+      },
+      /**
+       * The initial number of rows.
+       *
+       * @type number
+       */
+      rows: {
+        type: Number,
+        value: 3
+      }
+    },
+
+    _ariaLabelledByChanged: function(ariaLabelledBy) {
+      this.$.textarea.setAttribute('aria-labelledby', ariaLabelledBy);
+    },
+
+    _ariaDescribedByChanged: function(ariaDescribedBy) {
+      this.$.textarea.setAttribute('aria-describedby', ariaDescribedBy);
+    },
+
+    get _focusableElement() {
+      return this.$.textarea;
+    }
+  });
+  </script>
+</dom-module>

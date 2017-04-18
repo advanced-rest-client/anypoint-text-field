@@ -1,0 +1,161 @@
+<!--
+Copyright (C) Mulesoft Inc.
+All rights reserved.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="import" href="../anypoint-input/anypoint-input.html">
+<link rel="import" href="anypoint-text-container.html">
+<link rel="import" href="anypoint-text-behavior.html">
+<link rel="import" href="anypoint-validation-result.html">
+
+<!--
+`<anypoint-text-field>` Text input styled for the Anypoint platform as a Polymer powered web component
+
+### Example
+```
+<anypoint-text-field></anypoint-text-field>
+```
+
+### Styling
+`<anypoint-text-field>` provides the following custom properties and mixins for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--anypoint-text-field` | Mixin applied to the element | `{}`
+
+@group UI Elements
+@element anypoint-text-field
+@demo demo/index.html
+-->
+<dom-module id="anypoint-text-field">
+  <template>
+    <style>
+     :host {
+      display: block;
+    }
+
+    :host {
+      display: block;
+    }
+
+    :host([focused]) {
+      outline: none;
+    }
+
+    :host([hidden]) {
+      display: none !important;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      @apply(--anypoint-text-container-input-webkit-spinner);
+    }
+
+    input::-webkit-clear-button {
+      @apply(--anypoint-text-container-input-webkit-clear);
+    }
+
+    input::-webkit-input-placeholder {
+      color: var(--anypoint-text-container-color, --secondary-text-color);
+    }
+
+    input:-moz-placeholder {
+      color: var(--anypoint-text-container-color, --secondary-text-color);
+    }
+
+    input::-moz-placeholder {
+      color: var(--anypoint-text-container-color, --secondary-text-color);
+    }
+
+    input:-ms-input-placeholder {
+      color: var(--anypoint-text-container-color, --secondary-text-color);
+    }
+
+    label {
+      pointer-events: none;
+    }
+
+    anypoint-validation-result {
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+      -webkit-transition: all .2s ease-out;
+      transition: all .2s ease-out;
+    }
+
+    :host(:not([focused])) anypoint-validation-result {
+      transform: translate(-2px);
+    }
+    </style>
+
+    <anypoint-text-container
+      no-label-float="[[noLabelFloat]]"
+      always-float-label="[[_computeAlwaysFloatLabel(alwaysFloatLabel,placeholder)]]"
+      auto-validate$="[[autoValidate]]"
+      disabled$="[[disabled]]"
+      invalid="[[invalid]]">
+
+      <content select="[prefix]"></content>
+
+      <label hidden$="[[!label]]" aria-hidden="true" for="input">[[label]]</label>
+
+      <input is="anypoint-input" id="input"
+        aria-labelledby$="[[_ariaLabelledBy]]"
+        aria-describedby$="[[_ariaDescribedBy]]"
+        disabled$="[[disabled]]"
+        title$="[[title]]"
+        bind-value="{{value}}"
+        invalid="{{invalid}}"
+        prevent-invalid-input="[[preventInvalidInput]]"
+        allowed-pattern="[[allowedPattern]]"
+        validator="[[validator]]"
+        type$="[[type]]"
+        pattern$="[[pattern]]"
+        required$="[[required]]"
+        autocomplete$="[[autocomplete]]"
+        autofocus$="[[autofocus]]"
+        inputmode$="[[inputmode]]"
+        minlength$="[[minlength]]"
+        maxlength$="[[maxlength]]"
+        min$="[[min]]"
+        max$="[[max]]"
+        step$="[[step]]"
+        name$="[[name]]"
+        placeholder$="[[placeholder]]"
+        readonly$="[[readonly]]"
+        list$="[[list]]"
+        size$="[[size]]"
+        autocapitalize$="[[autocapitalize]]"
+        autocorrect$="[[autocorrect]]"
+        on-change="_onChange"
+        tabindex$="[[tabindex]]"
+        autosave$="[[autosave]]"
+        results$="[[results]]"
+        accept$="[[accept]]"
+        multiple$="[[multiple]]"
+        validation-states="{{validationStates}}">
+
+      <content select="[suffix]"></content>
+
+      <template is="dom-if" if="[[hasValidationMessage]]">
+        <anypoint-validation-result
+          aria-live="assertive"
+          error-message="[[errorMessage]]"
+          invalid="[[invalid]]"
+          focused="[[focused]]"
+          validation-states="{{validationStates}}"
+          horizontal-align="right"></anypoint-validation-result>
+      </template>
+
+    </anypoint-text-container>
+  </template>
+  <script>
+  Polymer({
+    is: 'anypoint-text-field',
+    behaviors: [
+      Polymer.IronFormElementBehavior,
+      Anypoint.AnypointTextBehavior
+    ]
+  });
+  </script>
+</dom-module>

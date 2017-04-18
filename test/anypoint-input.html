@@ -1,0 +1,126 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../iron-test-helpers/test-helpers.js"></script>
+  <script src="../../iron-test-helpers/mock-interactions.js"></script>
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../anypoint-text-field.html">
+</head>
+
+<body>
+  <test-fixture id="basic">
+    <template>
+      <anypoint-text-field></anypoint-text-field>
+    </template>
+  </test-fixture>
+  <test-fixture id="error">
+    <template>
+      <anypoint-text-field auto-validate pattern="[0-9]*" value="foobar" error-message="error"></anypoint-text-field>
+    </template>
+  </test-fixture>
+  <test-fixture id="required">
+    <template>
+      <anypoint-text-field auto-validate required error-message="error"></anypoint-text-field>
+    </template>
+  </test-fixture>
+  <test-fixture id="required-no-auto-validate">
+    <template>
+      <anypoint-text-field required pattern="[a-zA-Z]*" error-message="letters only!"></anypoint-text-field>
+    </template>
+  </test-fixture>
+  <script>
+  /* global fixture, assert, forceXIfStamp */
+  suite('basic', function() {
+    var input;
+
+    setup(function() {
+      input = fixture('basic');
+    });
+
+    test('setting value sets the input value', function() {
+      input.value = 'foobar';
+      assert.equal(input.inputElement.value, input.value, 'inputElement.value equals input.value');
+    });
+
+    test('placeholder does not overlap label', function() {
+      input.label = 'foo';
+      input.placeholder = 'bar';
+      forceXIfStamp(input);
+      assert.equal(input.inputElement.placeholder, input.placeholder,
+        'inputElement.placeholder equals input.placeholder');
+      assert.equal(input.noLabelFloat, false);
+      var floatingLabel = Polymer.dom(Polymer.dom(input.root)
+        .querySelector('anypoint-text-container').root).querySelector('.label-is-floating');
+      assert.ok(floatingLabel);
+    });
+
+    test('special types autofloat the label', function() {
+      input.type = 'date';
+      input.label = 'foo';
+      forceXIfStamp(input);
+      // Browsers that don't support special <input> types like `date` fallback
+      // to `text`, so make sure to only test if type is still preserved after
+      // the element is attached.
+      if (input.inputElement.type === 'date') {
+        assert.equal(input.alwaysFloatLabel, true);
+        var floatingLabel = Polymer.dom(Polymer.dom(input.root)
+          .querySelector('anypoint-text-container').root).querySelector('.label-is-floating');
+        assert.ok(floatingLabel);
+      }
+    });
+
+    test('label does not receive pointer events', function() {
+      input.label = 'always-float-label';
+      forceXIfStamp(input);
+      var label = Polymer.dom(input.root).querySelector('label');
+      assert.equal(getComputedStyle(label).pointerEvents, 'none');
+    });
+
+  });
+
+  suite('validation', function() {
+    test('error message is displayed', function() {
+      var input = fixture('error');
+      forceXIfStamp(input);
+      var error = Polymer.dom(input.root).querySelector('anypoint-validation-result');
+      assert.ok(error, 'anypoint-validation-result exists');
+    });
+
+    test('empty required input shows error', function() {
+      var input = fixture('required');
+      forceXIfStamp(input);
+      input.inputElement.focus();
+      input.inputElement.blur();
+      forceXIfStamp(input);
+      var error = Polymer.dom(input.root).querySelector('anypoint-validation-result');
+      assert.ok(error, 'anypoint-text-field-error exists');
+    });
+
+    test('invalid attribute updated after calling validate()', function() {
+      var input = fixture('required-no-auto-validate');
+      forceXIfStamp(input);
+      input.validate();
+      forceXIfStamp(input);
+      var error = Polymer.dom(input.root).querySelector('anypoint-validation-result');
+      assert.ok(error, 'anypoint-validation-result exists');
+      assert.isTrue(input.invalid, 'invalid is true');
+    });
+  });
+  </script>
+</body>
+
+</html>
