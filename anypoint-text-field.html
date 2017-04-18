@@ -10,21 +10,25 @@ All rights reserved.
 <link rel="import" href="anypoint-validation-result.html">
 
 <!--
-`<anypoint-text-field>` Text input styled for the Anypoint platform as a Polymer powered web component
+`<anypoint-text-field>` single line text input styled for the Anypoint platform as a Polymer
+powered web component
 
-### Example
+It may include an optional error message.
 ```
-<anypoint-text-field></anypoint-text-field>
+<anypoint-text-field required error-message="Value is required"></anypoint-text-field>
 ```
+
+It may include a custom validator(s).
+```
+<anypoint-text-field validator="my-validator" error-message="Value is required"></anypoint-text-field>
+```
+See `Anypoint.AnypointValidatableBehavior` for API and examples.
 
 ### Styling
-`<anypoint-text-field>` provides the following custom properties and mixins for styling:
 
-Custom property | Description | Default
-----------------|-------------|----------
-`--anypoint-text-field` | Mixin applied to the element | `{}`
+See `anypoint-text-container` for styling options.
 
-@group UI Elements
+@group Anypoint Elements
 @element anypoint-text-field
 @demo demo/index.html
 -->

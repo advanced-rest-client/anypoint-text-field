@@ -1,3 +1,17 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/advanced-rest-client/anypoint-text-field/compare/0.1.1...v0.1.2) (2017-04-18)
+
+
+### Docs
+
+* Updated documentation for the elements ([fb9da02900f873a715a1d64d691ec499a59b388f](https://github.com/advanced-rest-client/anypoint-text-field/commit/fb9da02900f873a715a1d64d691ec499a59b388f))
+
+### Fix
+
+* Fixed bower file ([90b098195d8f96b115247e9020ee4ef0741243b6](https://github.com/advanced-rest-client/anypoint-text-field/commit/90b098195d8f96b115247e9020ee4ef0741243b6))
+
+
+
 <a name="0.1.1"></a>
 ## 0.1.1 (2017-04-18)
 
