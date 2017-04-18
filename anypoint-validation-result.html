@@ -11,6 +11,17 @@ All rights reserved.
 The `<anypoint-validation-result>` is a container for an error message or list of validation
 rules if the input element uses `validator`s.
 
+### Styling
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--anypoint-validation-result-container` | Mixin applied to the element | `{}`
+`--anypoint-validation-result-border-color` | Border color of the popover | `--anypoint-color-aluminum3`
+`--anypoint-validation-result-left-border` | Color of the right border of the popover | `--anypoint-color-steel4`
+`--anypoint-text-container-invalid-color` | Color of error messages and borders when corresponding form control is invalid | `--anypoint-color-danger`
+`--anypoint-validation-result-message-size` | Font size of the validation message. | `12px`
+
+@demo demo/index.html
 -->
 <dom-module id="anypoint-validation-result">
   <template>
@@ -24,10 +35,11 @@ rules if the input element uses `validator`s.
       border: 1px var(--anypoint-validation-result-border-color, --anypoint-color-aluminum3) solid;
       position: relative;
       background-color: #fff;
+      @apply(--anypoint-validation-result-container);
     }
 
     .arrow {
-      border-right: 4px solid var(--anypoint-color-steel4);
+      border-right: 4px solid var(--anypoint-validation-result-left-border, --anypoint-color-steel4);
       border-top: 4px solid transparent;
       border-bottom: 4px solid transparent;
       left: -6px;
@@ -44,7 +56,7 @@ rules if the input element uses `validator`s.
       display: block;
       opacity: inherit;
       position: absolute;
-      background-color: var(--anypoint-color-steel4);
+      background-color: var(--anypoint-validation-result-left-border, --anypoint-color-steel4);
       height: calc(100% + 2px);
       width: 2px;
       top: -1px;
@@ -68,7 +80,7 @@ rules if the input element uses `validator`s.
     li {
       @apply(--anypoint-font-body);
       color: var(--anypoint-color-steel1);
-      font-size: 12px;
+      font-size: var(--anypoint-validation-result-message-size, 12px);
     }
 
     li[validated] {
