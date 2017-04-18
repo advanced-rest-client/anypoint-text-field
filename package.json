@@ -1,6 +1,6 @@
 {
   "name": "anypoint-text-field",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "Apache-2.0 OR CC-BY-4.0",
   "description": "Text input styled for the Anypoint platform as a Polymer powered web component",
   "devDependencies": {
