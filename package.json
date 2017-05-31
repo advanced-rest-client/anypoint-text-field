@@ -1,6 +1,6 @@
 {
   "name": "anypoint-text-field",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "license": "All rights reserved to Mulesoft Inc.",
   "description": "Text input styled for the Anypoint platform as a Polymer powered web component",
   "devDependencies": {

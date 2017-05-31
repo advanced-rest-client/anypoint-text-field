@@ -1,3 +1,13 @@
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/advanced-rest-client/anypoint-text-field/compare/0.1.5...v0.1.6) (2017-05-31)
+
+
+### Docs
+
+* Fixed documentation formatting ([bdec7fc10e65c6c82b0690a572a17ce176067282](https://github.com/advanced-rest-client/anypoint-text-field/commit/bdec7fc10e65c6c82b0690a572a17ce176067282))
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/advanced-rest-client/anypoint-text-field/compare/0.1.4...v0.1.5) (2017-05-31)
 
