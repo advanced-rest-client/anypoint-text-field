@@ -35,6 +35,7 @@ Anypoint platform styling.
 ### Styling
 
 `<anypoint-text-field>` provides the following custom properties and mixins for styling:
+
 Custom property | Description | Default
 ----------------|-------------|----------
 `--anypoint-text-container` | Mixin applied to the input container | `{}`
